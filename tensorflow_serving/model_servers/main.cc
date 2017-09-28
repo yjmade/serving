@@ -144,7 +144,7 @@ tensorflow::Status LoadCustomModelConfig(
 ModelServerConfig BuildSingleModelConfig(const string& model_name,
                                          const string& model_base_path) {
   ModelServerConfig config;
-  LOG(INFO) << "Building single TensorFlow model file config: "
+  LOG(INFO) << "I'm Building single TensorFlow model file config: "
             << " model_name: " << model_name
             << " model_base_path: " << model_base_path;
   tensorflow::serving::ModelConfig* single_model =
@@ -196,6 +196,7 @@ class PredictionServiceImpl final : public PredictionService::Service {
     // By default, this is infinite which is the same default as RunOptions.
     run_options.set_timeout_in_ms(
         DeadlineToTimeoutMillis(context->raw_deadline()));
+    LOG(INFO) << "Start Predict " << request->model_spec().name();
     const grpc::Status status = ToGRPCStatus(
         predictor_->Predict(run_options, core_.get(), *request, response));
     if (!status.ok()) {
