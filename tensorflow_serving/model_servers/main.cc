@@ -196,12 +196,15 @@ class PredictionServiceImpl final : public PredictionService::Service {
     // By default, this is infinite which is the same default as RunOptions.
     run_options.set_timeout_in_ms(
         DeadlineToTimeoutMillis(context->raw_deadline()));
-    LOG(INFO) << "Start Predict " << request->model_spec().name();
+    LOG(INFO) << "Start Predict " << request->model_spec().name() << " " <<request;
     const grpc::Status status = ToGRPCStatus(
         predictor_->Predict(run_options, core_.get(), *request, response));
     if (!status.ok()) {
       VLOG(1) << "Predict failed: " << status.error_message();
+    }else{
+      LOG(INFO)<< "Success Predict " << request->model_spec().name() << " " <<request;
     }
+    
     return status;
   }
 
